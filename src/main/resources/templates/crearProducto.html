@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Agregar_producto</title>
+</head>
+<body>
+<h1>Formulario para agregar un nuevo producto</h1>
+<form th:action="@{/productos}" th:object="${producto}" method="POST">
+
+    <label>Nombre del producto:</label>
+    <input type="text" th:field="*{nombre}" maxlength="20" required/><br/>
+
+    <label>Descripción: </label>
+    <input type="text" th:field="*{descripcion}" required/><br/>
+
+    <label>Cantidad:</label>
+    <input type="number" th:field="*{cantidad}" /><br/>
+
+    <button type="submit">Guardar producto</button>
+</form>
+</body>
+</html>
