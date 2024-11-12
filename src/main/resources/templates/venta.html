@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Realizar Venta</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<h1>Realizar Venta</h1>
+
+<!-- Formulario de venta -->
+<form th:action="@{/procesarVender}" method="post">
+    <div>
+        <label for="producto">Producto:</label>
+        <select name="productoId" id="producto" required>
+            <option value="" disabled selected>Seleccione un producto</option>
+            <!-- Productos inyectados desde el backend -->
+            <th:block th:each="producto : ${productos}">
+                <option th:value="${producto.id}" th:text="${producto.nombre}">Producto</option>
+            </th:block>
+        </select>
+    </div>
+    <div>
+        <label for="cantidad">Cantidad:</label>
+        <input type="number" name="cantidad" id="cantidad" min="1" required>
+    </div>
+    <button type="submit">Realizar Venta</button>
+</form>
+
+<!-- Mensaje de éxito o error después de procesar la venta -->
+<div th:if="${ventaExitosa}">
+    <p>Venta realizada con éxito.</p>
+</div>
+<div th:if="${error}">
+    <p th:text="${error}">Error</p>
+</div>
+</body>
+</html>
+
