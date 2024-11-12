@@ -39,12 +39,13 @@ public class SecurityConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/registro", "/js/**", "/css/**", "/img/**", "/inicio/**").permitAll()
+                        .requestMatchers("/registro", "/js/**", "/css/**", "/img/**", "/inicio/**", "/").permitAll()
                         .requestMatchers("/productos/**").authenticated()
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
                         .loginPage("/login")
+                        .loginProcessingUrl("/login")
                         .defaultSuccessUrl("/productos", true)
                         .permitAll()
                 )
