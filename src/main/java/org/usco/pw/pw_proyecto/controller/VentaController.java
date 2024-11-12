@@ -19,7 +19,6 @@ public class VentaController {
     @Autowired
     private ProductoServicioImpl productoServicio;
 
-
     @PreAuthorize("hasRole('ADMIN') or hasRole('VENDEDOR')")
     @GetMapping("/vender")
     public String mostrarPaginaVenta(Model model) {
@@ -27,12 +26,13 @@ public class VentaController {
         model.addAttribute("productos", productos);
         return "venta";
     }
-
+    @PreAuthorize("hasRole('ADMIN') or hasRole('VENDEDOR')")
     @PostMapping("/procesarVender")
     public String procesarVenta(@RequestParam("productoId") List<Long> productoIds,
                                 @RequestParam("cantidad") List<Integer> cantidades,
                                 RedirectAttributes redirectAttributes) {
         boolean ventaExitosa = true;
+        double totalVenta = 0;  // Nuevo campo para almacenar el total de la venta
 
         for (int i = 0; i < productoIds.size(); i++) {
             Long productoId = productoIds.get(i);
@@ -43,6 +43,7 @@ public class VentaController {
             if (producto != null && producto.getCantidad() >= cantidad) {
                 producto.setCantidad(producto.getCantidad() - cantidad);
                 productoServicio.actualizarProducto(producto);
+                totalVenta += producto.getPrecio() * cantidad;  // Agregar al total de la venta
             } else {
                 ventaExitosa = false;
                 redirectAttributes.addFlashAttribute("error", "No hay suficiente inventario para el producto " + producto.getNombre() + ".");
@@ -51,7 +52,7 @@ public class VentaController {
         }
 
         if (ventaExitosa) {
-            redirectAttributes.addFlashAttribute("mensaje", "Venta realizada exitosamente.");
+            redirectAttributes.addFlashAttribute("mensaje", "Venta realizada exitosamente. Total: " + totalVenta);
         }
 
         return "redirect:/productos";

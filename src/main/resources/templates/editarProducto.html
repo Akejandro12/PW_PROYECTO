@@ -7,7 +7,6 @@
 <body>
 <h1>Formulario para edición de producto</h1>
 <form th:action="@{/productos/{id}(id=${producto.id})}" th:object="${producto}" method="POST">
-
     <label>Nombre del producto:</label>
     <input type="text" th:field="*{nombre}" maxlength="20" required/><br/>
 
@@ -15,10 +14,13 @@
     <input type="text" th:field="*{descripcion}" required/><br/>
 
     <label>Cantidad:</label>
-    <input type="number" th:field="*{cantidad}" /><br/>
+    <input type="number" th:field="*{cantidad}" min="1" required/><br/>
 
+    <label>Precio:</label>
+    <input type="number" step="0.01" th:field="*{precio}" min="0" required/><br/>  <!-- Nuevo campo de precio -->
 
     <button type="submit">Guardar producto</button>
 </form>
+
 </body>
 </html>

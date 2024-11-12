@@ -30,5 +30,6 @@ public class Producto {
     @NotNull
     private Integer cantidad;
 
-
+    @NotNull
+    private Double precio;
 }

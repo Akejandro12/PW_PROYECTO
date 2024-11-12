@@ -51,15 +51,16 @@
             <label for="producto">Producto:</label>
             <select name="productoId[]" class="producto" required>
                 <option value="" disabled selected>Seleccione un producto</option>
-                <!-- Productos inyectados desde el backend -->
                 <th:block th:each="producto : ${productos}">
                     <option th:value="${producto.id}"
-                            th:text="${producto.nombre}"
-                            th:data-inventario="${producto.cantidad}">
+                            th:text="${producto.nombre + ' (Disponible: ' + producto.cantidad + ', Precio: ' + producto.precio + ')'}"
+                            th:data-inventario="${producto.cantidad}"
+                            th:data-precio="${producto.precio}">
                         Producto
                     </option>
                 </th:block>
             </select>
+
 
             <label for="cantidad">Cantidad:</label>
             <input type="number" name="cantidad[]" class="cantidad" min="1" required>
@@ -78,3 +79,4 @@
 </div>
 </body>
 </html>
+
