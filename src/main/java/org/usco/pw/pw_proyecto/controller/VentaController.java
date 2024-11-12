@@ -1,6 +1,7 @@
 package org.usco.pw.pw_proyecto.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +20,7 @@ public class VentaController {
     private ProductoServicioImpl productoServicio;
 
 
+    @PreAuthorize("hasRole('ADMIN') or hasRole('VENDEDOR')")
     @GetMapping("/vender")
     public String mostrarPaginaVenta(Model model) {
         List<Producto> productos = productoServicio.listarProductos();
