@@ -18,6 +18,7 @@ public class VentaController {
     @Autowired
     private ProductoServicioImpl productoServicio;
 
+
     @GetMapping("/vender")
     public String mostrarPaginaVenta(Model model) {
         List<Producto> productos = productoServicio.listarProductos();
@@ -26,21 +27,31 @@ public class VentaController {
     }
 
     @PostMapping("/procesarVender")
-    public String procesarVenta(@RequestParam("productoId") Long productoId,
-                                @RequestParam("cantidad") int cantidad,
+    public String procesarVenta(@RequestParam("productoId") List<Long> productoIds,
+                                @RequestParam("cantidad") List<Integer> cantidades,
                                 RedirectAttributes redirectAttributes) {
-        Producto producto = productoServicio.obtenerProducto(productoId);
+        boolean ventaExitosa = true;
 
-        if (producto != null && producto.getCantidad() >= cantidad) {
-            producto.setCantidad(producto.getCantidad() - cantidad); // Resta la cantidad vendida del inventario
-            productoServicio.actualizarProducto(producto); // Guarda el producto con la cantidad actualizada
-            redirectAttributes.addFlashAttribute("mensaje", "Venta realizada exitosamente.");
-        } else {
-            // Si la cantidad es mayor al inventario disponible, no se realiza la venta y se muestra el error
-            redirectAttributes.addFlashAttribute("error", "No hay suficiente inventario para realizar la venta.");
+        for (int i = 0; i < productoIds.size(); i++) {
+            Long productoId = productoIds.get(i);
+            int cantidad = cantidades.get(i);
+
+            Producto producto = productoServicio.obtenerProducto(productoId);
+
+            if (producto != null && producto.getCantidad() >= cantidad) {
+                producto.setCantidad(producto.getCantidad() - cantidad);
+                productoServicio.actualizarProducto(producto);
+            } else {
+                ventaExitosa = false;
+                redirectAttributes.addFlashAttribute("error", "No hay suficiente inventario para el producto " + producto.getNombre() + ".");
+                break;
+            }
         }
 
-        // Redirige a la página de productos con el mensaje
+        if (ventaExitosa) {
+            redirectAttributes.addFlashAttribute("mensaje", "Venta realizada exitosamente.");
+        }
+
         return "redirect:/productos";
     }
 

@@ -8,20 +8,37 @@
 </head>
 <script>
     function validarFormulario() {
-        var productoId = document.getElementById("producto").value;
-        var cantidad = document.getElementById("cantidad").value;
+        var productos = document.querySelectorAll(".producto");
+        var cantidades = document.querySelectorAll(".cantidad");
 
-        // Obtener el producto seleccionado
-        var productoSeleccionado = document.querySelector('#producto option[value="'+productoId+'"]');
+        for (let i = 0; i < productos.length; i++) {
+            var productoId = productos[i].value;
+            var cantidad = cantidades[i].value;
 
-        // Obtener el inventario disponible del atributo data-inventario
-        var inventarioDisponible = productoSeleccionado.getAttribute("data-inventario");
+            // Obtener el producto seleccionado y su inventario disponible
+            var productoSeleccionado = productos[i].querySelector(`option[value="${productoId}"]`);
+            var inventarioDisponible = productoSeleccionado ? parseInt(productoSeleccionado.getAttribute("data-inventario")) : 0;
 
-        if (cantidad > inventarioDisponible) {
-            alert("No hay suficiente inventario para realizar la venta.");
-            return false; // Evita que se envíe el formulario
+            console.log(`Producto ID: ${productoId}, Cantidad solicitada: ${cantidad}, Inventario disponible: ${inventarioDisponible}`);
+
+            if (cantidad > inventarioDisponible) {
+                alert("No hay suficiente inventario para el producto seleccionado en la fila " + (i + 1));
+                return false; // Evita que se envíe el formulario
+            }
         }
         return true; // Si la validación es correcta, se envía el formulario
+    }
+
+    function agregarProducto() {
+        // Copiar el contenido del primer grupo de selección y cantidad
+        var formulario = document.getElementById("formulario-productos");
+        var nuevoProducto = formulario.children[0].cloneNode(true);
+
+        // Restablecer los valores de la nueva fila
+        nuevoProducto.querySelector(".producto").value = "";
+        nuevoProducto.querySelector(".cantidad").value = 1;
+
+        formulario.appendChild(nuevoProducto);
     }
 </script>
 <body>
@@ -29,24 +46,26 @@
 
 <!-- Formulario de venta -->
 <form th:action="@{/procesarVender}" method="post" onsubmit="return validarFormulario()">
-    <div>
-        <label for="producto">Producto:</label>
-        <select name="productoId" id="producto" required>
-            <option value="" disabled selected>Seleccione un producto</option>
-            <!-- Productos inyectados desde el backend -->
-            <th:block th:each="producto : ${productos}">
-                <option th:value="${producto.id}"
-                        th:text="${producto.nombre}"
-                        th:data-inventario="${producto.cantidad}">
-                    Producto
-                </option>
-            </th:block>
-        </select>
+    <div id="formulario-productos">
+        <div class="producto-cantidad">
+            <label for="producto">Producto:</label>
+            <select name="productoId[]" class="producto" required>
+                <option value="" disabled selected>Seleccione un producto</option>
+                <!-- Productos inyectados desde el backend -->
+                <th:block th:each="producto : ${productos}">
+                    <option th:value="${producto.id}"
+                            th:text="${producto.nombre}"
+                            th:data-inventario="${producto.cantidad}">
+                        Producto
+                    </option>
+                </th:block>
+            </select>
+
+            <label for="cantidad">Cantidad:</label>
+            <input type="number" name="cantidad[]" class="cantidad" min="1" required>
+        </div>
     </div>
-    <div>
-        <label for="cantidad">Cantidad:</label>
-        <input type="number" name="cantidad" id="cantidad" min="1" required>
-    </div>
+    <button type="button" onclick="agregarProducto()">Agregar otro producto</button>
     <button type="submit">Realizar Venta</button>
 </form>
 
@@ -59,5 +78,3 @@
 </div>
 </body>
 </html>
-
-
