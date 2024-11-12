@@ -23,6 +23,12 @@ public class ProductoController {
     @GetMapping("/productos")
     public String listarProductos(Model model) {
         model.addAttribute("productos", productoServicio.listarProductos());
+        if (model.containsAttribute("mensaje")) {
+            model.addAttribute("mensaje", model.getAttribute("mensaje"));
+        }
+        if (model.containsAttribute("error")) {
+            model.addAttribute("error", model.getAttribute("error"));
+        }
         return "productos";
     }
     @PreAuthorize("hasRole('ADMIN')")

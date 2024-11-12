@@ -6,18 +6,40 @@
     <title>Realizar Venta</title>
     <link rel="stylesheet" href="/css/styles.css">
 </head>
+<script>
+    function validarFormulario() {
+        var productoId = document.getElementById("producto").value;
+        var cantidad = document.getElementById("cantidad").value;
+
+        // Obtener el producto seleccionado
+        var productoSeleccionado = document.querySelector('#producto option[value="'+productoId+'"]');
+
+        // Obtener el inventario disponible del atributo data-inventario
+        var inventarioDisponible = productoSeleccionado.getAttribute("data-inventario");
+
+        if (cantidad > inventarioDisponible) {
+            alert("No hay suficiente inventario para realizar la venta.");
+            return false; // Evita que se envíe el formulario
+        }
+        return true; // Si la validación es correcta, se envía el formulario
+    }
+</script>
 <body>
 <h1>Realizar Venta</h1>
 
 <!-- Formulario de venta -->
-<form th:action="@{/procesarVender}" method="post">
+<form th:action="@{/procesarVender}" method="post" onsubmit="return validarFormulario()">
     <div>
         <label for="producto">Producto:</label>
         <select name="productoId" id="producto" required>
             <option value="" disabled selected>Seleccione un producto</option>
             <!-- Productos inyectados desde el backend -->
             <th:block th:each="producto : ${productos}">
-                <option th:value="${producto.id}" th:text="${producto.nombre}">Producto</option>
+                <option th:value="${producto.id}"
+                        th:text="${producto.nombre}"
+                        th:data-inventario="${producto.cantidad}">
+                    Producto
+                </option>
             </th:block>
         </select>
     </div>
@@ -29,12 +51,13 @@
 </form>
 
 <!-- Mensaje de éxito o error después de procesar la venta -->
-<div th:if="${ventaExitosa}">
-    <p>Venta realizada con éxito.</p>
+<div th:if="${mensaje}">
+    <p th:text="${mensaje}">Venta realizada con éxito.</p>
 </div>
 <div th:if="${error}">
     <p th:text="${error}">Error</p>
 </div>
 </body>
 </html>
+
 
