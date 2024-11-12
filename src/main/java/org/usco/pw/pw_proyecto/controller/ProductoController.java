@@ -2,6 +2,7 @@ package org.usco.pw.pw_proyecto.controller;
 
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -24,6 +25,7 @@ public class ProductoController {
         model.addAttribute("productos", productoServicio.listarProductos());
         return "productos";
     }
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/productos/crearProducto")
     public String mostrarFormulario(Model model) {
         model.addAttribute("producto", new Producto());
@@ -34,6 +36,7 @@ public class ProductoController {
         productoServicio.guardarProducto(producto);
         return "redirect:/productos";
     }
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/productos/editar/{id}")
     public String mostrarEditarProducto(@PathVariable Long id, Model model) {
         model.addAttribute("producto", productoServicio.obtenerProducto(id));
@@ -51,6 +54,7 @@ public class ProductoController {
         productoServicio.actualizarProducto(productoActual);
         return "redirect:/productos";
     }
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/productos/{id}")
     public String eliminarProducto(@PathVariable Long id) {
         productoServicio.eliminarProducto(id);

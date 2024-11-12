@@ -16,4 +16,9 @@ public class RootController {
     public String mostrarInicio() {
         return "inicio";
     }
+    @GetMapping("/403")
+    public String mostrar403() {
+        return "403";
+    }
+
 }
