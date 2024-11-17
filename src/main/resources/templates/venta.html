@@ -25,6 +25,10 @@
                 alert("No hay suficiente inventario para el producto seleccionado en la fila " + (i + 1));
                 return false; // Evita que se envíe el formulario
             }
+            if (!productoId || cantidad <= 0) {
+                alert("Por favor, seleccione un producto y una cantidad válida en la fila " + (i + 1));
+                return false;
+            }
         }
         return true; // Si la validación es correcta, se envía el formulario
     }
@@ -48,7 +52,7 @@
 <form th:action="@{/procesarVender}" method="post" onsubmit="return validarFormulario()">
     <div id="formulario-productos">
         <div class="producto-cantidad">
-            <label for="producto">Producto:</label>
+            <label>Producto:</label>
             <select name="productoId[]" class="producto" required>
                 <option value="" disabled selected>Seleccione un producto</option>
                 <th:block th:each="producto : ${productos}">
@@ -62,7 +66,7 @@
             </select>
 
 
-            <label for="cantidad">Cantidad:</label>
+            <label>Cantidad:</label>
             <input type="number" name="cantidad[]" class="cantidad" min="1" required>
         </div>
     </div>

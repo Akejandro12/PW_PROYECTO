@@ -3,6 +3,7 @@ package org.usco.pw.pw_proyecto.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -66,5 +67,14 @@ public class UsuarioServicioImpl implements UsuarioServicio {
     @Override
     public List<Usuario> listarUsuarios() {
         return usuarioRepositorio.findAll();
+    }
+    public Usuario obtenerUsuarioPorUsername(String username) {
+        return usuarioRepositorio.findByEmail(username);
+    }
+
+    // Método para obtener el usuario autenticado utilizando SecurityContextHolder
+    public Usuario obtenerUsuarioAutenticado() {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        return obtenerUsuarioPorUsername(username);  // Usamos el email como identificador
     }
 }
