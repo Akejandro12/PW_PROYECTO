@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.usco.pw.pw_proyecto.entity.Producto;
+import org.usco.pw.pw_proyecto.entity.Venta;
 import org.usco.pw.pw_proyecto.service.ProductoServicioImpl;
+import org.usco.pw.pw_proyecto.service.VentaServicioImpl;
 
 import java.util.List;
 
@@ -20,6 +22,8 @@ public class VentaController {
 
     @Autowired
     private ProductoServicioImpl productoServicio;
+    @Autowired
+    private VentaServicioImpl ventaServicioImpl;
 
     // Método para obtener el usuario autenticado
     private String obtenerUsuarioAutenticado() {
@@ -71,5 +75,15 @@ public class VentaController {
 
         return "redirect:/productos";  // Redirigir a la lista de productos
     }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/historial")
+    public String mostrarHistorial(Model model) {
+        List<Venta> ventas = ventaServicioImpl.listarVentas(); // Método para obtener el historial
+        model.addAttribute("ventas", ventas);
+        return "historial";
+    }
+
+
 
 }

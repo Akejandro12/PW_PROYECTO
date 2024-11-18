@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Historial de Ventas</title>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet"
+        href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+        integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+        crossorigin="anonymous">
+</head>
+<body>
+<!-- Barra de navegación -->
+<ul class="nav nav-tabs">
+  <li class="nav-item">
+    <a class="nav-link" th:href="@{/productos}">Productos</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" th:href="@{/productos/crearProducto}">Nuevo Producto</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" th:href="@{/vender}">Nueva Venta</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link active" th:href="@{/historial}">Historial de Ventas</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" th:href="@{/logout}">Cerrar Sesión</a>
+  </li>
+</ul>
+
+<div class="container">
+  <h1>Historial de Ventas</h1>
+  <br>
+  <table class="table table-striped table-bordered">
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>Usuario</th>
+      <th>Producto ID</th>
+      <th>Cantidad</th>
+      <th>Fecha y Hora</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- Iteramos sobre las ventas -->
+    <tr th:each="venta : ${ventas}">
+      <td th:text="${venta.id}">ID</td>
+      <td th:text="${venta.usuario}">Usuario</td>
+      <td th:text="${venta.productoId}">Producto ID</td>
+      <td th:text="${venta.cantidad}">Cantidad</td>
+      <td th:text="${#dates.format(venta.fechaHora, 'yyyy-MM-dd HH:mm:ss')}">Fecha y Hora</td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+        integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+        crossorigin="anonymous"></script>
+</body>
+</html>
