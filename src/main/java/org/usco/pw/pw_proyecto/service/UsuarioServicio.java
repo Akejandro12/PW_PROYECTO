@@ -12,4 +12,7 @@ public interface UsuarioServicio extends UserDetailsService {
 
     public List<Usuario> listarUsuarios();
 
+    void eliminarUsuario(Long id);
+
+
 }

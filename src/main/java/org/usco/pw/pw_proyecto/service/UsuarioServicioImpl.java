@@ -1,5 +1,6 @@
 package org.usco.pw.pw_proyecto.service;
 
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -50,6 +51,19 @@ public class UsuarioServicioImpl implements UsuarioServicio {
                 passwordEncoder.encode(registroDTO.getPassword()), Arrays.asList(rolUsuario));
         return usuarioRepositorio.save(usuario);
     }
+    @Transactional
+    public void eliminarUsuario(Long usuarioId) {
+        // Buscar el usuario en la base de datos
+        Usuario usuario = usuarioRepositorio.findById(usuarioId)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+        // Eliminar las relaciones en la tabla intermedia (esto debería ser automático con el CascadeType.ALL)
+        usuarioRepositorio.delete(usuario); // Esto eliminará tanto el usuario como las relaciones asociadas
+
+        // Si también necesitas eliminar los roles asociados (esto depende de tu lógica de negocio):
+        // rolRepository.deleteAll(usuario.getRoles()); // Esto solo si deseas eliminar los roles cuando se elimina un usuario
+    }
+
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

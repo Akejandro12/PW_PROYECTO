@@ -121,6 +121,7 @@
             <th>Nombre</th>
             <th>Apellido</th>
             <th>Email</th>
+            <th>Acciones</th>
         </tr>
         </thead>
         <tbody>
@@ -129,6 +130,12 @@
             <td th:text="${usuario.nombre}">Nombre</td>
             <td th:text="${usuario.apellido}">Apellido</td>
             <td th:text="${usuario.email}">Email</td>
+            <td>
+                <!-- Botón para eliminar -->
+                <form th:action="@{/usuarios/{id}(id=${usuario.id})}" method="post">
+                    <button type="submit" class="btn btn-danger">Eliminar</button>
+                </form>
+            </td>
         </tr>
         </tbody>
     </table>
