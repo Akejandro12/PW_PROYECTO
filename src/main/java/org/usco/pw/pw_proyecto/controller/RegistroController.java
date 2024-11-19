@@ -5,6 +5,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.usco.pw.pw_proyecto.service.UsuarioServicio;
 
 @Controller
@@ -23,6 +24,13 @@ public class RegistroController {
     public String verPaginaDeInicio(Model modelo) {
         modelo.addAttribute("usuarios", servicio.listarUsuarios());
         return "usuarios";
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/usuarios/{id}")
+    public String eliminarUsuario(@PathVariable Long id) {
+        servicio.eliminarUsuario(id);
+        return "redirect:/usuarios";
     }
 }
 

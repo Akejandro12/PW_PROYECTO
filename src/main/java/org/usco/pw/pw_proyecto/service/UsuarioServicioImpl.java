@@ -68,6 +68,12 @@ public class UsuarioServicioImpl implements UsuarioServicio {
     public List<Usuario> listarUsuarios() {
         return usuarioRepositorio.findAll();
     }
+
+    @Override
+    public void eliminarUsuario(Long id) {
+        usuarioRepositorio.deleteById(id);
+    }
+
     public Usuario obtenerUsuarioPorUsername(String username) {
         return usuarioRepositorio.findByEmail(username);
     }

@@ -1,6 +1,17 @@
 package org.usco.pw.pw_proyecto.controller;
 
+import org.apache.commons.io.output.ByteArrayOutputStream;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -15,6 +26,8 @@ import org.usco.pw.pw_proyecto.entity.Venta;
 import org.usco.pw.pw_proyecto.service.ProductoServicioImpl;
 import org.usco.pw.pw_proyecto.service.VentaServicioImpl;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 @Controller
@@ -84,6 +97,46 @@ public class VentaController {
         return "historial";
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("/generarReporteVentas")
+    public ResponseEntity<byte[]> generarReporteVentas() throws IOException {
+        // Obtener la lista de ventas
+        List<Venta> ventas = ventaServicioImpl.listarVentas();
 
+        // Crear un libro de trabajo de Excel
+        Workbook workbook = new XSSFWorkbook();
+        Sheet sheet = workbook.createSheet("Historial de Ventas");
+
+        // Crear una fila para los encabezados
+        Row headerRow = sheet.createRow(0);
+        headerRow.createCell(0).setCellValue("ID");
+        headerRow.createCell(1).setCellValue("Usuario");
+        headerRow.createCell(2).setCellValue("Producto ID");
+        headerRow.createCell(3).setCellValue("Cantidad");
+        headerRow.createCell(4).setCellValue("Fecha y Hora");
+
+        // Rellenar las filas con los datos de ventas
+        int rowNum = 1;
+        for (Venta venta : ventas) {
+            Row row = sheet.createRow(rowNum++);
+            row.createCell(0).setCellValue(venta.getId());
+            row.createCell(1).setCellValue(venta.getUsuario());
+            row.createCell(2).setCellValue(venta.getProductoId());
+            row.createCell(3).setCellValue(venta.getCantidad());
+            row.createCell(4).setCellValue(venta.getFechaHora().toString());
+        }
+
+        // Convertir el libro de trabajo a un array de bytes
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        workbook.write(baos);
+        workbook.close();
+
+        // Establecer las cabeceras HTTP para la descarga
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Disposition", "attachment; filename=ventas_report.xlsx");
+
+        // Devolver el archivo Excel como una respuesta
+        return new ResponseEntity<>(baos.toByteArray(), headers, HttpStatus.OK);
+    }
 
 }
