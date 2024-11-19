@@ -25,12 +25,5 @@ public class RegistroController {
         modelo.addAttribute("usuarios", servicio.listarUsuarios());
         return "usuarios";
     }
-
-    @PreAuthorize("hasRole('ADMIN')")
-    @GetMapping("/usuarios/{id}")
-    public String eliminarUsuario(@PathVariable Long id) {
-        servicio.eliminarUsuario(id);
-        return "redirect:/usuarios";
-    }
 }
 

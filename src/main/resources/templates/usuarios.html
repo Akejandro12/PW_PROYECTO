@@ -46,7 +46,6 @@
             <th>Nombre</th>
             <th>Apellido</th>
             <th>Email</th>
-            <th>Acciones</th>
         </tr>
         </thead>
         <tbody>
@@ -55,9 +54,6 @@
             <td th:text="${usuario.nombre}">ID</td>
             <td th:text="${usuario.apellido}">ID</td>
             <td th:text="${usuario.email}">ID</td>
-            <td>
-                <a th:href="@{/usuarios/{id}(id=${usuario.id})}" class="btn btn-danger">Eliminar</a>
-            </td>
         </tr>
         </tbody>
     </table>

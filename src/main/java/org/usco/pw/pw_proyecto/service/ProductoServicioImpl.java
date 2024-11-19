@@ -30,10 +30,6 @@ public class ProductoServicioImpl implements ProductoServicio {
         return productoRepositorio.findAll();
     }
 
-    public void saveProducto(Producto producto) {
-        productoRepositorio.save(producto);
-    }
-
     @Override
     public List<Producto> listarProductos() {
         return productoRepositorio.findAll();

@@ -90,6 +90,7 @@
         <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi-ooxml</artifactId><!-- Para el excel -->
+                <version>5.2.3</version> <!-- Usa la última versión estable -->
         </dependency>
     </dependencies>
 
