@@ -27,8 +27,8 @@
         }
 
         .navbar a {
-            color: #fbfff1 !important; /* Texto blanco en los enlaces */
-            font-weight: normal; /* Sin negrita */
+            color: #fbfff1 !important;
+            font-weight: normal;
             padding: 10px 20px;
             margin: 0 10px;
             border-radius: 5px;
@@ -36,13 +36,13 @@
         }
 
         .navbar a:hover {
-            background-color: #b4c5e4; /* Cambio de color al pasar el cursor */
-            color: #3c3744; /* Color del texto al pasar el cursor */
+            background-color: #b4c5e4;
+            color: #3c3744;
         }
 
         .navbar .nav-link.active {
-            background-color: #b4c5e4; /* Color de fondo para el enlace activo */
-            color: #3c3744; /* Color de texto cuando está activo */
+            background-color: #b4c5e4;
+            color: #3c3744;
         }
         form {
             background-color: #fff;
@@ -103,7 +103,6 @@
 </head>
 <body>
 
-<!-- Barra de navegación -->
 <nav class="navbar navbar-expand-lg navbar-light">
     <div class="container-fluid">
         <ul class="nav">
@@ -131,7 +130,6 @@
 
 <h1>Realizar Venta</h1>
 
-<!-- Formulario de venta -->
 <form th:action="@{/procesarVender}" method="post" onsubmit="return validarFormulario()">
     <div id="formulario-productos">
         <div class="producto-cantidad">
@@ -156,7 +154,6 @@
     <button type="submit">Realizar Venta</button>
 </form>
 
-<!-- Mensaje de éxito o error después de procesar la venta -->
 <div th:if="${mensaje}">
     <p th:text="${mensaje}">Venta realizada con éxito.</p>
 </div>
@@ -173,7 +170,6 @@
             var productoId = productos[i].value;
             var cantidad = cantidades[i].value;
 
-            // Obtener el producto seleccionado y su inventario disponible
             var productoSeleccionado = productos[i].querySelector(`option[value="${productoId}"]`);
             var inventarioDisponible = productoSeleccionado ? parseInt(productoSeleccionado.getAttribute("data-inventario")) : 0;
 
@@ -181,22 +177,20 @@
 
             if (cantidad > inventarioDisponible) {
                 alert("No hay suficiente inventario para el producto seleccionado en la fila " + (i + 1));
-                return false; // Evita que se envíe el formulario
+                return false;
             }
             if (!productoId || cantidad <= 0) {
                 alert("Por favor, seleccione un producto y una cantidad válida en la fila " + (i + 1));
                 return false;
             }
         }
-        return true; // Si la validación es correcta, se envía el formulario
+        return true;
     }
 
     function agregarProducto() {
-        // Copiar el contenido del primer grupo de selección y cantidad
         var formulario = document.getElementById("formulario-productos");
         var nuevoProducto = formulario.children[0].cloneNode(true);
 
-        // Restablecer los valores de la nueva fila
         nuevoProducto.querySelector(".producto").value = "";
         nuevoProducto.querySelector(".cantidad").value = 1;
 

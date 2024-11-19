@@ -4,10 +4,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inicio de sesión</title>
-    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap" rel="stylesheet">
-    <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <style>
@@ -19,8 +17,8 @@
         }
 
         .navbar a {
-            color: #fbfff1 !important; /* Texto blanco en los enlaces */
-            font-weight: normal; /* Sin negrita */
+            color: #fbfff1 !important;
+            font-weight: normal;
             padding: 10px 20px;
             margin: 0 10px;
             border-radius: 5px;
@@ -28,22 +26,21 @@
         }
 
         .navbar a:hover {
-            background-color: #b4c5e4; /* Cambio de color al pasar el cursor */
-            color: #3c3744; /* Color del texto al pasar el cursor */
+            background-color: #b4c5e4;
+            color: #3c3744;
         }
 
         .navbar .nav-link.active {
-            background-color: #b4c5e4; /* Color de fondo para el enlace activo */
-            color: #3c3744; /* Color de texto cuando está activo */
+            background-color: #b4c5e4;
+            color: #3c3744;
         }
 
-        /* Ajuste para centrar el formulario vertical y horizontalmente */
         .login-container {
-            min-height: 90vh; /* Reducir altura para evitar scroll */
+            min-height: 90vh;
             display: flex;
-            justify-content: center; /* Centrado horizontal */
-            align-items: center; /* Centrado vertical */
-            padding-top: 3rem; /* Ajustar para mayor espacio sin scroll */
+            justify-content: center;
+            align-items: center;
+            padding-top: 3rem;
         }
 
         .login-card {
@@ -51,7 +48,6 @@
             max-width: 400px;
         }
 
-        /* Estilos para hacer la tabla responsiva */
         @media (max-width: 768px) {
             .navbar {
                 padding: 10px;
@@ -62,14 +58,13 @@
             }
 
             h1 {
-                font-size: 24px; /* Ajusta el tamaño del título en pantallas pequeñas */
+                font-size: 24px;
             }
         }
     </style>
 </head>
 <body class="bg-light">
 
-<!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-light">
     <div class="container-fluid">
         <a class="navbar-brand" th:href="@{/}">Gestor de Inventarios</a>
@@ -81,65 +76,54 @@
                 <li class="nav-item">
                     <a class="nav-link" th:href="@{/registro}">Registro</a>
                 </li>
-                <!-- Aquí puedes agregar otros elementos de la barra de navegación si lo necesitas -->
             </ul>
         </div>
     </div>
 </nav>
 
-<!-- Login Form -->
 <div class="container login-container">
     <div class="card login-card shadow-lg p-4">
         <h1 class="text-center mb-4">Inicio de sesión</h1>
         <form id="loginForm" th:action="@{/login}" method="post">
-            <!-- Error Alert -->
+
             <div th:if="${param.error}" class="alert alert-danger text-center">
                 Usuario o contraseña inválidos.
             </div>
 
-            <!-- Logout Alert -->
             <div th:if="${param.logout}" class="alert alert-info text-center">
                 Ha cerrado sesión exitosamente.
             </div>
 
-            <!-- Username -->
             <div class="mb-3">
                 <label for="username" class="form-label">Correo:</label>
                 <input id="username" name="username" type="email" class="form-control" required placeholder="Digite su email ID">
                 <div class="invalid-feedback">Por favor, ingresa un correo válido.</div>
             </div>
 
-            <!-- Password -->
             <div class="mb-3">
                 <label for="password" class="form-label">Contraseña:</label>
                 <input id="password" name="password" type="password" class="form-control" required placeholder="Digite su contraseña">
                 <div class="invalid-feedback">La contraseña debe tener al menos 4 caracteres.</div>
             </div>
 
-            <!-- Submit Button -->
             <div class="d-grid">
                 <button type="submit" class="btn btn-primary">Iniciar sesión</button>
             </div>
         </form>
 
-        <!-- Register Link -->
         <div class="text-center mt-3">
             <small>¿Eres nuevo usuario? <a th:href="@{/registro}">Regístrate aquí</a>.</small>
         </div>
     </div>
 </div>
 
-<!-- Bootstrap Bundle with Popper -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-<!-- Custom jQuery Script -->
 <script>
     $(document).ready(function () {
-        // Validación al enviar el formulario
         $("#loginForm").on("submit", function (event) {
             let valid = true;
 
-            // Validar el campo de correo
             const email = $("#username").val();
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             if (!emailRegex.test(email)) {
@@ -149,7 +133,6 @@
                 $("#username").removeClass("is-invalid");
             }
 
-            // Validar el campo de contraseña
             const password = $("#password").val();
             if (password.length < 4) {
                 $("#password").addClass("is-invalid");
@@ -158,13 +141,11 @@
                 $("#password").removeClass("is-invalid");
             }
 
-            // Evitar el envío si alguna validación falla
             if (!valid) {
                 event.preventDefault();
             }
         });
 
-        // Eliminar la clase 'is-invalid' al cambiar los valores
         $("#username, #password").on("input", function () {
             $(this).removeClass("is-invalid");
         });

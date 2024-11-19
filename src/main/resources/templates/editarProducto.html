@@ -83,7 +83,6 @@
 </head>
 <body>
 
-<!-- Barra de navegación -->
 <nav class="navbar navbar-expand-lg navbar-light">
     <div class="container-fluid">
         <ul class="nav">
@@ -109,10 +108,8 @@
     </div>
 </nav>
 
-<!-- Título -->
 <h1>Formulario para agregar un nuevo producto</h1>
 
-<!-- Formulario -->
 <div class="container">
     <form th:action="@{/productos/{id}(id=${producto.id})}" th:object="${producto}" method="POST">
         <div class="mb-3">

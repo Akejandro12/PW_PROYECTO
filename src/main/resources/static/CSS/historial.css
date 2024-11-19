@@ -1,0 +1,73 @@
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    font-family: 'Georgia', serif;
+    text-align: center;
+    color: #3c3744;
+    margin-top: 20px;
+}
+
+.navbar {
+    background-color: #3066be;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-family: 'Poppins', sans-serif;
+}
+
+.navbar a {
+    color: #fbfff1 !important;
+    font-weight: normal;
+    padding: 10px 20px;
+    margin: 0 10px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.navbar a:hover {
+    background-color: #b4c5e4;
+    color: #3c3744;
+}
+
+.navbar .nav-link.active {
+    background-color: #b4c5e4;
+    color: #3c3744;
+}
+
+.table th, .table td {
+    text-align: center;
+}
+
+.btn-info, .btn-danger {
+    color: #fbfff1;
+}
+
+.table-striped-columns tbody tr:nth-child(odd) {
+    background-color: #b4c5e4;
+}
+
+.table-bordered {
+    border-color: #3066be;
+}
+
+/* Hacer la tabla responsiva */
+@media (max-width: 768px) {
+    .table {
+        font-size: 12px;
+    }
+
+    .navbar {
+        padding: 10px;
+    }
+
+    .navbar a {
+        padding: 5px 10px;
+    }
+
+    h1 {
+        font-size: 24px;
+    }
+}
