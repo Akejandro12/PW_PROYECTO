@@ -1,5 +1,7 @@
 package org.usco.pw.pw_proyecto.controller;
 
+import jakarta.servlet.http.HttpServletResponse;
+import net.sf.jasperreports.engine.*;
 import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -8,6 +10,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -26,9 +29,14 @@ import org.usco.pw.pw_proyecto.entity.Venta;
 import org.usco.pw.pw_proyecto.service.ProductoServicioImpl;
 import org.usco.pw.pw_proyecto.service.VentaServicioImpl;
 
+import javax.sql.DataSource;
 import java.io.File;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.sql.Connection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class VentaController {
@@ -37,6 +45,10 @@ public class VentaController {
     private ProductoServicioImpl productoServicio;
     @Autowired
     private VentaServicioImpl ventaServicioImpl;
+    @Autowired
+    private DataSource dataSource;
+    @Autowired
+    private ResourceLoader resourceLoader;
 
     // Método para obtener el usuario autenticado
     private String obtenerUsuarioAutenticado() {
@@ -138,5 +150,31 @@ public class VentaController {
         // Devolver el archivo Excel como una respuesta
         return new ResponseEntity<>(baos.toByteArray(), headers, HttpStatus.OK);
     }
+
+    @GetMapping("/generarReporte")
+    public void generarReporte(HttpServletResponse response) throws Exception {
+        // Configurar el tipo de contenido y el encabezado de la respuesta
+        response.setContentType("application/pdf");
+        response.setHeader("Content-Disposition", "inline; filename=reporte_historial.pdf");
+
+        // Compilar el reporte
+        JasperReport reporte = JasperCompileManager
+                .compileReport(resourceLoader.getResource("classpath:historialVentas.jrxml").getInputStream());
+
+        // Usar la conexión de base de datos
+        try (Connection conexion = dataSource.getConnection()) {
+            // Generar el reporte sin parámetros
+            JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, null, conexion);
+
+            // Exportar el reporte como PDF y enviarlo en la respuesta
+            try (OutputStream salida = response.getOutputStream()) {
+                JasperExportManager.exportReportToPdfStream(jasperPrint, salida);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new Exception("Error al generar el reporte: " + e.getMessage());
+        }
+    }
+
 
 }

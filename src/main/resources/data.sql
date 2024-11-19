@@ -15,7 +15,6 @@ SELECT 'ROLE_USER'
 
 
 
-
 -- Esto se hace cuando quieras cambiar el rol de un usuario
 DELETE FROM usuarios_roles
 WHERE usuario_id = 1 AND rol_id = (SELECT id FROM rol WHERE nombre = 'ROLE_USER');
@@ -55,17 +54,4 @@ END$$
 
 DELIMITER ;
 
-
-
-DELIMITER $$
-
-CREATE TRIGGER before_delete_rol
-    BEFORE DELETE ON rol
-    FOR EACH ROW
-BEGIN
-    -- Elimina las filas de la tabla usuarios_roles que hacen referencia al rol que se va a eliminar
-    DELETE FROM usuarios_roles WHERE rol_id = OLD.id;
-    END$$
-
-    DELIMITER ;
 

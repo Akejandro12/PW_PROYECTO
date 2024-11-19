@@ -112,7 +112,11 @@
 <div class="container mt-3">
   <h1>Historial de Ventas</h1>
   <form th:action="@{/generarReporteVentas}" method="post">
-    <button type="submit" class="btn btn-primary">Generar Reporte</button>
+    <button type="submit" class="btn btn-primary">Generar Reporte(Excel)</button>
+  </form>
+  <br>
+  <form th:action="@{/generarReporte}" method="get">
+    <button type="submit" class="btn btn-primary">Generar Reporte(Pdf)</button>
   </form>
   <br>
   <table class="table table-striped table-bordered">
