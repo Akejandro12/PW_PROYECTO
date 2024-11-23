@@ -13,14 +13,22 @@
 
 <nav class="navbar navbar-expand-lg navbar-light">
     <div class="container-fluid">
-        <a class="navbar-brand" th:href="@{/}">Gestor de Inventarios</a>
+        <a class="navbar-brand" th:href="@{/}" th:text="#{navbar.brand}">Gestor de Inventarios</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="nav ms-auto">
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/registro}">Registro</a>
+                    <a class="nav-link" th:href="@{/registro}" th:text="#{register}">Registro</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="languageDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" th:text="#{navbar.language}"></i>Idioma</a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="languageDropdown">
+                        <li><a class="dropdown-item" th:href="@{''(lang='es')}" th:text="#{language.spanish}">Español</a></li>
+                        <li><a class="dropdown-item" th:href="@{''(lang='en')}" th:text="#{language.english}">English</a></li>
+                        <li><a class="dropdown-item" th:href="@{''(lang='fr')}" th:text="#{language.french}">Français</a></li>
+                    </ul>
                 </li>
             </ul>
         </div>
@@ -29,36 +37,37 @@
 
 <div class="container login-container">
     <div class="card login-card shadow-lg p-4">
-        <h1 class="text-center mb-4">Inicio de sesión</h1>
+        <h1 class="text-center mb-4" th:text="#{login}">Inicio de sesión</h1>
         <form id="loginForm" th:action="@{/login}" method="post">
 
-            <div th:if="${param.error}" class="alert alert-danger text-center">
+            <div th:if="${param.error}" class="alert alert-danger text-center" th:text="#{login.error}">
                 Usuario o contraseña inválidos.
             </div>
 
-            <div th:if="${param.logout}" class="alert alert-info text-center">
+            <div th:if="${param.logout}" class="alert alert-info text-center" th:text="#{login.logout}">
                 Ha cerrado sesión exitosamente.
             </div>
 
             <div class="mb-3">
-                <label for="username" class="form-label">Correo:</label>
-                <input id="username" name="username" type="email" class="form-control" required placeholder="Digite su email ID">
-                <div class="invalid-feedback">Por favor, ingresa un correo válido.</div>
+                <label for="username" class="form-label" th:text="#{login.username.label}">Correo:</label>
+                <input id="username" name="username" type="email" class="form-control" required th:placeholder="#{login.username.placeholder}" placeholder="Digite su email ID">
+                <div class="invalid-feedback" th:text="#{login.username.invalid}">Por favor, ingresa un correo válido.</div>
             </div>
 
             <div class="mb-3">
-                <label for="password" class="form-label">Contraseña:</label>
-                <input id="password" name="password" type="password" class="form-control" required placeholder="Digite su contraseña">
-                <div class="invalid-feedback">La contraseña debe tener al menos 4 caracteres.</div>
+                <label for="password" class="form-label" th:text="#{login.password.label}">Contraseña:</label>
+                <input id="password" name="password" type="password" class="form-control" required th:placeholder="#{login.password.placeholder}" placeholder="Digite su contraseña">
+                <div class="invalid-feedback" th:text="#{login.password.invalid}">La contraseña debe tener al menos 4 caracteres.</div>
             </div>
 
             <div class="d-grid">
-                <button type="submit" class="btn btn-primary">Iniciar sesión</button>
+                <button type="submit" class="btn btn-primary" th:text="#{login.button}">Iniciar sesión</button>
             </div>
         </form>
 
         <div class="text-center mt-3">
-            <small>¿Eres nuevo usuario? <a th:href="@{/registro}">Regístrate aquí</a>.</small>
+            <small th:text="#{login.newuser.message}">¿Eres nuevo usuario? </small>
+            <a th:href="@{/registro}" th:text="#{register.link}">Regístrate aquí</a>
         </div>
     </div>
 </div>

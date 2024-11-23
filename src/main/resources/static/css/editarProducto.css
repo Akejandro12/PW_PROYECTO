@@ -69,3 +69,7 @@ button {
 button:hover {
     background-color: #3c3744;
 }
+
+.dropdown-menu-end{
+    background-color: #3066be;
+}

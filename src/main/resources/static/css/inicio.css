@@ -24,6 +24,10 @@ p {
     color: #606060;
 }
 
+.dropdown-menu-end{
+    background-color: #3066be;
+}
+
 .container {
     background-color: #fbfff1;
     padding: 30px;

@@ -10,63 +10,70 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body class="bg-light">
-
 <nav class="navbar navbar-expand-lg navbar-light">
     <div class="container-fluid">
-        <a class="navbar-brand" th:href="@{/}">Gestor de Inventarios</a>
+        <a class="navbar-brand" th:href="@{/}" th:text="#{navbar.brand}">Gestor de Inventarios</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="nav ms-auto">
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/login}">Inicio de sesión</a>
+                    <a class="nav-link" th:href="@{/login}" th:text="#{login}">Inicio de sesión</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="languageDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" th:text="#{navbar.language}"></i>Idioma</a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="languageDropdown">
+                        <li><a class="dropdown-item" th:href="@{''(lang='es')}" th:text="#{language.spanish}">Español</a></li>
+                        <li><a class="dropdown-item" th:href="@{''(lang='en')}" th:text="#{language.english}">English</a></li>
+                        <li><a class="dropdown-item" th:href="@{''(lang='fr')}" th:text="#{language.french}">Français</a></li>
+                    </ul>
                 </li>
             </ul>
         </div>
     </div>
 </nav>
-
 <div class="container login-container">
     <div class="card login-card shadow-lg p-4">
-        <h1 class="text-center mb-4">Regístrate</h1>
+        <h1 class="text-center mb-4" th:text="#{register}">Regístrate</h1>
 
         <form id="registerForm" th:action="@{/registro}" method="post" th:object="${usuario}">
-            <div th:if="${param.exito}" class="alert alert-info text-center">
+            <div th:if="${param.exito}" class="alert alert-info text-center" th:text="#{register.success}">
                 Se ha registrado exitosamente en la aplicación.
             </div>
 
             <div class="mb-3">
-                <label for="nombre" class="form-label">Nombre:</label>
-                <input id="nombre" name="nombre" type="text" class="form-control" th:field="*{nombre}" required placeholder="Ingresa tu nombre">
-                <div class="invalid-feedback">El nombre es obligatorio.</div>
+                <label for="nombre" class="form-label" th:text="#{register.name.label}">Nombre:</label>
+                <input id="nombre" name="nombre" type="text" class="form-control" th:field="*{nombre}" required th:placeholder="#{register.name.placeholder}" placeholder="Ingresa tu nombre">
+                <div class="invalid-feedback" th:text="#{register.name.invalid}">El nombre es obligatorio.</div>
             </div>
 
             <div class="mb-3">
-                <label for="apellido" class="form-label">Apellido:</label>
-                <input id="apellido" name="apellido" type="text" class="form-control" th:field="*{apellido}" required placeholder="Ingresa tu apellido">
-                <div class="invalid-feedback">El apellido es obligatorio.</div>
+                <label for="apellido" class="form-label" th:text="#{register.lastname.label}">Apellido:</label>
+                <input id="apellido" name="apellido" type="text" class="form-control" th:field="*{apellido}" required th:placeholder="#{register.lastname.placeholder}" placeholder="Ingresa tu apellido">
+                <div class="invalid-feedback" th:text="#{register.lastname.invalid}">El apellido es obligatorio.</div>
             </div>
 
             <div class="mb-3">
-                <label for="email" class="form-label">Email:</label>
-                <input id="email" name="email" type="email" class="form-control" th:field="*{email}" required placeholder="Ingresa tu email">
-                <div class="invalid-feedback">Por favor, ingresa un correo válido.</div>
+                <label for="email" class="form-label" th:text="#{register.email.label}">Email:</label>
+                <input id="email" name="email" type="email" class="form-control" th:field="*{email}" required th:placeholder="#{register.email.placeholder}" placeholder="Ingresa tu email">
+                <div class="invalid-feedback" th:text="#{register.email.invalid}">Por favor, ingresa un correo válido.</div>
             </div>
 
             <div class="mb-3">
-                <label for="password" class="form-label">Contraseña:</label>
-                <input id="password" name="password" type="password" class="form-control" th:field="*{password}" required placeholder="Crea una contraseña">
-                <div class="invalid-feedback">La contraseña debe tener al menos 4 caracteres.</div>
+                <label for="password" class="form-label" th:text="#{register.password.label}">Contraseña:</label>
+                <input id="password" name="password" type="password" class="form-control" th:field="*{password}" required th:placeholder="#{register.password.placeholder}" placeholder="Crea una contraseña">
+                <div class="invalid-feedback" th:text="#{register.password.invalid}">La contraseña debe tener al menos 4 caracteres.</div>
             </div>
 
             <div class="d-grid">
-                <button type="submit" class="btn btn-success">Registrar</button>
+                <button type="submit" class="btn btn-success" th:text="#{register.button}">Registrar</button>
             </div>
         </form>
 
         <div class="text-center mt-3">
-            <small>¿Ya tienes cuenta? <a th:href="@{/login}">Inicia sesión aquí</a>.</small>
+            <small th:text="#{register.already.message}">¿Ya tienes cuenta? </small>
+            <a th:href="@{/login}" th:text="#{login.link}">Inicia sesión aquí</a>
         </div>
     </div>
 </div>

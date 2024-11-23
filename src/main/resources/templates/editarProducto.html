@@ -14,52 +14,61 @@
     <div class="container-fluid">
         <ul class="nav">
             <li class="nav-item">
-                <a class="nav-link" th:href="@{/productos}">Productos</a>
+                <a class="nav-link" th:href="@{/productos}" th:text="#{navbar.products}">Productos</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" th:href="@{/productos/crearProducto}">Nuevo Producto</a>
+                <a class="nav-link" th:href="@{/productos/crearProducto}" th:text="#{navbar.new.product}">Nuevo Producto</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" th:href="@{/vender}">Nueva Venta</a>
+                <a class="nav-link" th:href="@{/vender}" th:text="#{navbar.new.sale}">Nueva Venta</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" th:href="@{/usuarios}">Usuarios</a>
+                <a class="nav-link" th:href="@{/usuarios}" th:text="#{navbar.users}">Usuarios</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" th:href="@{/historial}">Historial de Ventas</a>
+                <a class="nav-link" th:href="@{/historial}" th:text="#{navbar.sales.history}">Historial de Ventas</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" th:href="@{/logout}">Cerrar sesión</a>
+                <a class="nav-link" th:href="@{/logout}" th:text="#{navbar.logout}">Cerrar sesión</a>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="languageDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" th:text="#{navbar.language}">
+                    <i class="bi bi-globe"></i> Idioma</a>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="languageDropdown">
+                    <li><a class="dropdown-item" th:href="@{''(lang='es')}" th:text="#{language.spanish}">Español</a></li>
+                    <li><a class="dropdown-item" th:href="@{''(lang='en')}" th:text="#{language.english}">English</a></li>
+                    <li><a class="dropdown-item" th:href="@{''(lang='fr')}" th:text="#{language.french}">Français</a></li>
+                </ul>
             </li>
         </ul>
     </div>
 </nav>
 
-<h1>Formulario para agregar un nuevo producto</h1>
+<h1 th:text="#{form.product.edit.title}">Formulario para editar producto</h1>
 
 <div class="container">
     <form th:action="@{/productos/{id}(id=${producto.id})}" th:object="${producto}" method="POST">
         <div class="mb-3">
-            <label for="nombre" class="form-label">Nombre del producto:</label>
+            <label for="nombre" class="form-label" th:text="#{form.product.name.label}">Nombre del producto:</label>
             <input type="text" id="nombre" th:field="*{nombre}" maxlength="20" class="form-control" required/>
         </div>
 
         <div class="mb-3">
-            <label for="descripcion" class="form-label">Descripción:</label>
+            <label for="descripcion" class="form-label" th:text="#{form.product.description.label}">Descripción:</label>
             <input type="text" id="descripcion" th:field="*{descripcion}" class="form-control" required/>
         </div>
 
         <div class="mb-3">
-            <label for="cantidad" class="form-label">Cantidad:</label>
+            <label for="cantidad" class="form-label" th:text="#{form.product.quantity.label}">Cantidad:</label>
             <input type="number" id="cantidad" th:field="*{cantidad}" min="1" class="form-control" required/>
         </div>
 
         <div class="mb-3">
-            <label for="precio" class="form-label">Precio:</label>
+            <label for="precio" class="form-label" th:text="#{form.product.price.label}">Precio:</label>
             <input type="number" id="precio" step="0.01" th:field="*{precio}" min="0" class="form-control" required/>
         </div>
 
-        <button type="submit" class="btn btn-primary w-100">Guardar producto</button>
+        <button type="submit" class="btn btn-primary w-100" th:text="#{form.product.submit}">Guardar producto</button>
     </form>
 </div>
 

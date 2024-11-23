@@ -13,37 +13,46 @@
     <div class="container-fluid">
         <ul class="nav">
             <li class="nav-item">
-                <a class="nav-link active" th:href="@{/productos}">Productos</a>
+                <a class="nav-link active" th:href="@{/productos}" th:text="#{navbar.products}">Productos</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" th:href="@{/productos/crearProducto}">Nuevo Producto</a>
+                <a class="nav-link" th:href="@{/productos/crearProducto}" th:text="#{navbar.new.product}">Nuevo Producto</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" th:href="@{/vender}">Nueva Venta</a>
+                <a class="nav-link" th:href="@{/vender}" th:text="#{navbar.new.sale}">Nueva Venta</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" th:href="@{/usuarios}">Usuarios</a>
+                <a class="nav-link" th:href="@{/usuarios}" th:text="#{navbar.users}">Usuarios</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" th:href="@{/historial}">Historial de Ventas</a>
+                <a class="nav-link" th:href="@{/historial}" th:text="#{navbar.sales.history}">Historial de Ventas</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" th:href="@{/logout}">Cerrar sesión</a>
+                <a class="nav-link" th:href="@{/logout}" th:text="#{navbar.logout}">Cerrar sesión</a>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="languageDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" th:text="#{navbar.language}">
+                    <i class="bi bi-globe"></i> Idioma</a>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="languageDropdown">
+                    <li><a class="dropdown-item" th:href="@{''(lang='es')}" th:text="#{language.spanish}">Español</a></li>
+                    <li><a class="dropdown-item" th:href="@{''(lang='en')}" th:text="#{language.english}">English</a></li>
+                    <li><a class="dropdown-item" th:href="@{''(lang='fr')}" th:text="#{language.french}">Français</a></li>
+                </ul>
             </li>
         </ul>
     </div>
 </nav>
 
 <div class="container mt-3">
-    <h1>Lista de Productos</h1>
+    <h1 th:text="#{products.list.title}">Lista de Productos</h1>
     <table class="table table-striped-columns table-bordered">
         <thead>
         <tr>
-            <th>Nombre</th>
-            <th>Descripción</th>
-            <th>Cantidad</th>
-            <th>Precio</th>
-            <th>Acciones</th>
+            <th th:text="#{table.header.name}">Nombre</th>
+            <th th:text="#{table.header.description}">Descripción</th>
+            <th th:text="#{table.header.quantity}">>Cantidad</th>
+            <th th:text="#{table.header.price}">>Precio</th>
+            <th th:text="#{table.header.actions}">>Acciones</th>
         </tr>
         </thead>
         <tbody>
@@ -53,8 +62,8 @@
             <td th:text="${producto.cantidad}" class="stock">Cantidad</td>
             <td th:text="${producto.precio}">Precio</td>
             <td>
-                <a th:href="@{/productos/editar/{id}(id=${producto.id})}" class="btn btn-info">Editar</a>
-                <a th:href="@{/productos/{id}(id=${producto.id})}" class="btn btn-danger">Eliminar</a>
+                <a th:href="@{/productos/editar/{id}(id=${producto.id})}" class="btn btn-info" th:text="#{button.edit}">Editar</a>
+                <a th:href="@{/productos/{id}(id=${producto.id})}" class="btn btn-danger" th:text="#{button.delete}">Eliminar</a>
             </td>
         </tr>
         </tbody>
