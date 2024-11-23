@@ -42,7 +42,7 @@ public class SecurityConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/registro", "/js/**", "/css/**", "/img/**", "/inicio/**", "/", "/clases/**").permitAll()
+                        .requestMatchers("/registro", "/js/**", "/css/**", "/multimedia/**", "/inicio/**", "/", "/clases/**").permitAll()
                         .requestMatchers("/usuarios").authenticated()
                         .requestMatchers("/productos/**").authenticated()
                         .anyRequest().authenticated()
