@@ -50,7 +50,6 @@ public class VentaController {
     @Autowired
     private ResourceLoader resourceLoader;
 
-    // Método para obtener el usuario autenticado
     private String obtenerUsuarioAutenticado() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return authentication != null ? authentication.getName() : "Desconocido";
@@ -70,21 +69,21 @@ public class VentaController {
                                 @RequestParam("cantidad") List<Integer> cantidades,
                                 RedirectAttributes redirectAttributes) {
         boolean ventaExitosa = true;
-        double totalVenta = 0;  // Almacenamos el total de la venta
+        double totalVenta = 0;
 
-        // Obtener el nombre del usuario autenticado
+
         String usuarioAutenticado = obtenerUsuarioAutenticado();
 
         for (int i = 0; i < productoIds.size(); i++) {
             Long productoId = productoIds.get(i);
             int cantidad = cantidades.get(i);
 
-            // Registrar la venta utilizando el servicio
+
             try {
                 productoServicio.registrarVenta(usuarioAutenticado, productoId, cantidad);
 
-                // Si todo salió bien, calculamos el total
-                Producto producto = productoServicio.obtenerProducto(productoId);  // Asumimos que tienes un método para obtener el producto
+
+                Producto producto = productoServicio.obtenerProducto(productoId);
                 totalVenta += producto.getPrecio() * cantidad;
 
             } catch (Exception e) {
@@ -98,7 +97,7 @@ public class VentaController {
             redirectAttributes.addFlashAttribute("mensaje", "Venta realizada exitosamente. Total: " + totalVenta);
         }
 
-        return "redirect:/productos";  // Redirigir a la lista de productos
+        return "redirect:/productos";
     }
 
     @PreAuthorize("hasRole('ADMIN')")
@@ -112,14 +111,14 @@ public class VentaController {
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/generarReporteVentas")
     public ResponseEntity<byte[]> generarReporteVentas() throws IOException {
-        // Obtener la lista de ventas
+
         List<Venta> ventas = ventaServicioImpl.listarVentas();
 
-        // Crear un libro de trabajo de Excel
+
         Workbook workbook = new XSSFWorkbook();
         Sheet sheet = workbook.createSheet("Historial de Ventas");
 
-        // Crear una fila para los encabezados
+
         Row headerRow = sheet.createRow(0);
         headerRow.createCell(0).setCellValue("ID");
         headerRow.createCell(1).setCellValue("Usuario");
@@ -127,7 +126,7 @@ public class VentaController {
         headerRow.createCell(3).setCellValue("Cantidad");
         headerRow.createCell(4).setCellValue("Fecha y Hora");
 
-        // Rellenar las filas con los datos de ventas
+
         int rowNum = 1;
         for (Venta venta : ventas) {
             Row row = sheet.createRow(rowNum++);
@@ -138,35 +137,32 @@ public class VentaController {
             row.createCell(4).setCellValue(venta.getFechaHora().toString());
         }
 
-        // Convertir el libro de trabajo a un array de bytes
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         workbook.write(baos);
         workbook.close();
 
-        // Establecer las cabeceras HTTP para la descarga
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-Disposition", "attachment; filename=ventas_report.xlsx");
+        headers.add("Content-Disposition", "attachment; filename=ventas_reporte.xlsx");
 
-        // Devolver el archivo Excel como una respuesta
+
         return new ResponseEntity<>(baos.toByteArray(), headers, HttpStatus.OK);
     }
 
     @GetMapping("/generarReporte")
     public void generarReporte(HttpServletResponse response) throws Exception {
-        // Configurar el tipo de contenido y el encabezado de la respuesta
+
         response.setContentType("application/pdf");
         response.setHeader("Content-Disposition", "inline; filename=reporte_historial.pdf");
 
-        // Compilar el reporte
+
         JasperReport reporte = JasperCompileManager
                 .compileReport(resourceLoader.getResource("classpath:historialVentas.jrxml").getInputStream());
 
-        // Usar la conexión de base de datos
+
         try (Connection conexion = dataSource.getConnection()) {
-            // Generar el reporte sin parámetros
+
             JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, null, conexion);
 
-            // Exportar el reporte como PDF y enviarlo en la respuesta
             try (OutputStream salida = response.getOutputStream()) {
                 JasperExportManager.exportReportToPdfStream(jasperPrint, salida);
             }

@@ -22,14 +22,14 @@ public class SecurityConfiguration {
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder(); // Creamos un bean para BCryptPasswordEncoder
+        return new BCryptPasswordEncoder();
     }
 
     @Bean
     public DaoAuthenticationProvider authenticationProvider(UsuarioServicio usuarioServicio, BCryptPasswordEncoder passwordEncoder) {
         DaoAuthenticationProvider auth = new DaoAuthenticationProvider();
-        auth.setUserDetailsService(usuarioServicio); // Configuramos UsuarioServicio
-        auth.setPasswordEncoder(passwordEncoder); // Configuramos el PasswordEncoder
+        auth.setUserDetailsService(usuarioServicio);
+        auth.setPasswordEncoder(passwordEncoder);
         return auth;
     }
 

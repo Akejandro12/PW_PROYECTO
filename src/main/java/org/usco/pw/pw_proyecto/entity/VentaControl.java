@@ -17,7 +17,7 @@ public class VentaControl {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long productoId;  // Guardamos solo el ID del producto
+    private Long productoId;
     private String usuarioNombre;
     private Timestamp fechaHora;
 

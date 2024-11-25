@@ -9,7 +9,7 @@ public class RootController {
 
     @GetMapping("/")
     public String redirectToInicio() {
-        return "redirect:/inicio";  // Redirige a la ruta /inicio
+        return "redirect:/inicio";
     }
 
     @GetMapping("/inicio")

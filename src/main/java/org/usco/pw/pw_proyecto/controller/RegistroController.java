@@ -29,8 +29,8 @@ public class RegistroController {
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/usuarios/{id}")
     public String eliminarUsuario(@PathVariable("id") Long id) {
-        servicio.eliminarUsuario(id); // Llama al servicio para eliminar el usuario
-        return "redirect:/usuarios";  // Redirige a la lista de usuarios
+        servicio.eliminarUsuario(id);
+        return "redirect:/usuarios";
     }
 
 }

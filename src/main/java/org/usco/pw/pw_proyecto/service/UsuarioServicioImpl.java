@@ -26,13 +26,13 @@ public class UsuarioServicioImpl implements UsuarioServicio {
 
     private UsuarioRepositorio usuarioRepositorio;
 
-    // Inyectamos BCryptPasswordEncoder de manera estándar en lugar de a través del constructor
+
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
     @Autowired
     private RolRepositorio rolRepositorio;
 
-    // Inyectamos el repositorio en el constructor
+
     @Autowired
     public UsuarioServicioImpl(UsuarioRepositorio usuarioRepositorio) {
         this.usuarioRepositorio = usuarioRepositorio;
@@ -40,7 +40,7 @@ public class UsuarioServicioImpl implements UsuarioServicio {
 
     @Override
     public Usuario guardar(UsuarioRegistroDTO registroDTO) {
-        // Buscar el rol 'ROLE_USER' existente en la base de datos
+
         Rol rolUsuario = rolRepositorio.findByNombre("ROLE_USER");
         if (rolUsuario == null) {
             throw new RuntimeException("Rol 'ROLE_USER' no encontrado en la base de datos.");
@@ -53,15 +53,13 @@ public class UsuarioServicioImpl implements UsuarioServicio {
     }
     @Transactional
     public void eliminarUsuario(Long usuarioId) {
-        // Buscar el usuario en la base de datos
+
         Usuario usuario = usuarioRepositorio.findById(usuarioId)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
-        // Eliminar las relaciones en la tabla intermedia (esto debería ser automático con el CascadeType.ALL)
-        usuarioRepositorio.delete(usuario); // Esto eliminará tanto el usuario como las relaciones asociadas
 
-        // Si también necesitas eliminar los roles asociados (esto depende de tu lógica de negocio):
-        // rolRepository.deleteAll(usuario.getRoles()); // Esto solo si deseas eliminar los roles cuando se elimina un usuario
+        usuarioRepositorio.delete(usuario);
+
     }
 
 
@@ -87,9 +85,9 @@ public class UsuarioServicioImpl implements UsuarioServicio {
         return usuarioRepositorio.findByEmail(username);
     }
 
-    // Método para obtener el usuario autenticado utilizando SecurityContextHolder
+
     public Usuario obtenerUsuarioAutenticado() {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        return obtenerUsuarioPorUsername(username);  // Usamos el email como identificador
+        return obtenerUsuarioPorUsername(username);
     }
 }

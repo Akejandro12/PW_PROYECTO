@@ -46,21 +46,18 @@ public class ProductoController {
         return "redirect:/productos";
     }
 
-    // Cambiar la ruta aquí para que sea /productos/editar/{id}
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/productos/editar/{id}")
     public String mostrarFormularioEdicion(@PathVariable Long id, Model modelo) {
         Producto producto = productoServicio.obtenerProducto(id);
         if (producto != null) {
             modelo.addAttribute("producto", producto);
-            return "editarProducto"; // Nombre de la plantilla Thymeleaf
+            return "editarProducto";
         } else {
-            // Redirigir o mostrar error si no se encuentra el producto
             return "redirect:/productos";
         }
     }
 
-    // Cambiar la ruta aquí también para que sea /productos/editar/{id}
     @PostMapping("/productos/{id}")
     public String actualizarProducto(@PathVariable Long id, @ModelAttribute Producto producto, RedirectAttributes redirectAttributes) {
         Producto productoExistente = productoServicio.obtenerProducto(id);
@@ -68,8 +65,7 @@ public class ProductoController {
             productoExistente.setNombre(producto.getNombre());
             productoExistente.setDescripcion(producto.getDescripcion());
             productoExistente.setCantidad(producto.getCantidad());
-            productoExistente.setPrecio(producto.getPrecio());  // Aquí actualizas el precio
-
+            productoExistente.setPrecio(producto.getPrecio());
             productoServicio.actualizarProducto(productoExistente);
 
             redirectAttributes.addFlashAttribute("mensaje", "Producto actualizado con éxito.");

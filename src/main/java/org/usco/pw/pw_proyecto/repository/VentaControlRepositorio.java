@@ -4,5 +4,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.usco.pw.pw_proyecto.entity.VentaControl;
 
 public interface VentaControlRepositorio extends JpaRepository<VentaControl, Long> {
-    // Puedes agregar métodos personalizados si los necesitas
+
 }

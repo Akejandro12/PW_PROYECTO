@@ -55,23 +55,23 @@ public class ProductoServicioImpl implements ProductoServicio {
         productoRepositorio.deleteById(id);
     }
 
-    // Método para registrar la venta en la base de datos
+
     @Transactional
     public void registrarVenta(String usuario, Long productoId, int cantidad) {
-        // Obtener el producto por su ID
+
         Producto producto = productoRepositorio.findById(productoId)
                 .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
 
-        // Verificar que haya suficiente inventario
+
         if (producto.getCantidad() < cantidad) {
             throw new RuntimeException("No hay suficiente inventario para el producto " + producto.getNombre());
         }
 
-        // Actualizar la cantidad del producto (restando la cantidad vendida)
-        producto.setCantidad(producto.getCantidad() - cantidad);
-        productoRepositorio.save(producto);  // Guardar el producto con la cantidad actualizada
 
-        // Registrar la venta en la tabla `venta`
+        producto.setCantidad(producto.getCantidad() - cantidad);
+        productoRepositorio.save(producto);
+
+
         Venta venta = new Venta();
         venta.setUsuario(usuario);
         venta.setProductoId(productoId);
@@ -79,7 +79,7 @@ public class ProductoServicioImpl implements ProductoServicio {
         venta.setFechaHora(new Timestamp(System.currentTimeMillis()));
         ventaRepository.save(venta);
 
-        // Registrar la venta en la tabla `venta_control`
+
         VentaControl ventaControl = new VentaControl();
         ventaControl.setProductoId(productoId);
         ventaControl.setUsuarioNombre(usuario);
